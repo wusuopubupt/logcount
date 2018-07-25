@@ -12,6 +12,7 @@ import kafka.javaapi.producer.Producer;
 import kafka.producer.KeyedMessage;
 import kafka.producer.ProducerConfig;
 
+
 public class MsgSender extends Thread {
 	private final static Logger logger = LoggerFactory.getLogger(MsgSender.class);
 
@@ -24,7 +25,9 @@ public class MsgSender extends Thread {
 		this.queue = queue;
 
 		Properties props = new Properties();
-		props.put("metadata.broker.list", "10.10.102.191:9092,10.10.102.192:9092,10.10.102.193:9092");
+		// assuming that the Kafka broker this application is talking to runs on local machine with port 9092
+		props.put("bootstrap.servers", "localhost:9092");
+		props.put("metadata.broker.list", "localhost:9092");
 		props.put("serializer.class", "kafka.serializer.StringEncoder");
 		// props.put("partitioner.class", "example.producer.SimplePartitioner");
 		props.put("request.required.acks", "1");

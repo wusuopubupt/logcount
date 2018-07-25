@@ -93,13 +93,13 @@ public class LogStream {
 			System.exit(-1);
 		}
 
-		SparkConf conf = new SparkConf().setAppName("recsys log stream");
+		SparkConf conf = new SparkConf().setAppName("recsys log stream").setMaster("local[4]");
 		JavaStreamingContext ssc = new JavaStreamingContext(conf, new Duration(1000));
 
 		Map<String, Integer> topicMap = Maps.newHashMap();
 		topicMap.put("recsys", 4);
 		JavaPairReceiverInputDStream<String, String> logstream = KafkaUtils.createStream(ssc,
-				"10.10.102.191:2181,10.10.102.192:2181,10.10.102.193:2181", "recsys_group1", topicMap);
+				"localhost:2181", "recsys_group1", topicMap);
 
 		JavaDStream<String> lines = logstream.map(new Function<Tuple2<String, String>, String>() {
 			private static final long serialVersionUID = -1801798365843350169L;
